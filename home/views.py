@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import *
+from .forms import *
 
 
 
@@ -11,4 +12,23 @@ def categoria(request):
         'lista' : Categoria.objects.all().order_by('-id'),
     }
     return render(request, 'categoria/lista.html',contexto)
+
+def form_categoria(request):
+    if request.method == 'POST':
+       form = CategoriaForm(request.POST) 
+       if form.is_valid():
+            form.save() 
+            return redirect('categoria') 
+    else:
+        form = CategoriaForm() 
+    contexto = {
+        'form':form,
+    }
+    return render(request, 'categoria/formulario.html', contexto)
+
+    form = CategoriaForm()
+    contexto = {
+        'form' : form,
+    }
+    return render(request, 'categoria/formulario.html',contexto)
 
