@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block titulo_conteudo %} Detalhes da Categoria {% endblock %}
+
+{% block conteudo %}
+
+<p><strong>ID:</strong> {{ categoria.id }}</p>
+<p><strong>Nome:</strong> {{ categoria.nome }}</p>
+<p><strong>Ordem:</strong> {{ categoria.ordem }}</p>
+
+<button onclick="location.href='{% url 'categoria' %}'" class="btn btn-secondary">
+    Voltar
+</button>
+
+{% endblock %}

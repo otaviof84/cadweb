@@ -6,6 +6,12 @@
 
 <form method="post">
     {% csrf_token %}
+    {% if form.errors %}
+    <div class="alert alert-danger">
+        {{ form.errors }}
+    </div>
+{% endif %}
+
     {{ form.as_p }}
 
     <button class="btn btn-primary mt-4" type="submit">
