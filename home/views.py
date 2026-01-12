@@ -71,6 +71,52 @@ def detalhes_categoria(request, id):
 
     return render(request, 'categoria/detalhes.html', {'categoria': categoria})
 
+def cliente(request):
+    contexto = {
+        'lista': Cliente.objects.all().order_by('-id'),
+    }
+    return render(request, 'cliente/lista.html', contexto)
+
+
+def form_cliente(request):
+    if request.method == 'POST':
+        form = ClienteForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Cliente cadastrado com sucesso!')
+            return redirect('cliente')
+        else:
+            messages.error(request, 'Erro ao cadastrar cliente.')
+    else:
+        form = ClienteForm()
+
+    return render(request, 'cliente/formulario.html', {'form': form})
+
+
+def editar_cliente(request, id):
+    cliente = get_object_or_404(Cliente, pk=id)
+
+    if request.method == 'POST':
+        form = ClienteForm(request.POST, instance=cliente)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Cliente atualizado com sucesso!')
+            return redirect('cliente')
+        else:
+            messages.error(request, 'Erro ao atualizar cliente.')
+    else:
+        form = ClienteForm(instance=cliente)
+
+    return render(request, 'cliente/formulario.html', {'form': form})
+
+
+def remover_cliente(request, id):
+    cliente = get_object_or_404(Cliente, pk=id)
+    cliente.delete()
+    messages.success(request, 'Cliente removido com sucesso!')
+    return redirect('cliente')
+
+
 
 
 

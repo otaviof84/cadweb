@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block titulo_conteudo %} Formulário de Cliente {% endblock %}
+
+{% block conteudo %}
+
+{% if form.errors %}
+<div class="alert alert-danger">
+    {{ form.errors }}
+</div>
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <button type="submit" class="btn btn-primary">Salvar</button>
+    <button type="button" onclick="location.href='{% url 'cliente' %}'" class="btn btn-secondary">Voltar</button>
+</form>
+
+{% endblock %}

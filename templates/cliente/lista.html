@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block titulo_conteudo %} Listagem de Clientes {% endblock %}
+
+{% block conteudo %}
+
+<button onclick="location.href='{% url 'form_cliente' %}'" class="btn btn-primary">Novo Cliente</button>
+
+<table class="table table-bordered mt-3">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th>Data Nascimento</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in lista %}
+        <tr>
+            <td>{{ item.id }}</td>
+            <td>{{ item.nome }}</td>
+            <td>{{ item.cpf }}</td>
+            <td>{{ item.datanascimento }}</td>
+            <td>
+                <button onclick="location.href='{% url 'editar_cliente' item.id %}'" class="btn btn-warning">Alterar</button>
+                <button onclick="if(confirm('Deseja excluir?')){ location.href='{% url 'remover_cliente' item.id %}'; }" class="btn btn-danger">Excluir</button>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
