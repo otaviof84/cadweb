@@ -116,6 +116,25 @@ def remover_cliente(request, id):
     messages.success(request, 'Cliente removido com sucesso!')
     return redirect('cliente')
 
+def produto(request):
+    return render(request, 'produto/lista.html', {'lista': Produto.objects.all()})
+
+def form_produto(request):
+    if request.method == 'POST':
+        form = ProdutoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Produto salvo com sucesso!')
+            return redirect('produto')
+    else:
+        form = ProdutoForm()
+    return render(request, 'produto/form.html', {'form': form})
+
+def detalhes_produto(request, id):
+    produto = get_object_or_404(Produto, pk=id)
+    return render(request, 'produto/detalhes.html', {'produto': produto})
+
+
 
 
 

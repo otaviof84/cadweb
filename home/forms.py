@@ -62,3 +62,20 @@ class ClienteForm(forms.ModelForm):
         if datanasc and datanasc > date.today():
             raise forms.ValidationError('Data de nascimento não pode ser futura.')
         return datanasc
+    
+class ProdutoForm(forms.ModelForm):
+    class Meta:
+        model = Produto
+        fields = ['categoria', 'nome', 'preco', 'imagem']
+        widgets = {
+            'categoria': forms.Select(attrs={'class': 'form-control'}),
+            'nome': forms.TextInput(attrs={'class': 'form-control'}),
+            'preco': forms.TextInput(attrs={'class': 'form-control preco'}),
+            'imagem': forms.HiddenInput()
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(ProdutoForm, self).__init__(*args, **kwargs)
+        self.fields['preco'].localize = True
+        self.fields['preco'].widget.is_localized = True
+

@@ -12,4 +12,8 @@ urlpatterns = [
     path('cliente/form', views.form_cliente, name='form_cliente'),
     path('cliente/editar/<int:id>/', views.editar_cliente, name='editar_cliente'),
     path('cliente/remover/<int:id>/', views.remover_cliente, name='remover_cliente'),
+    path('produto/', views.produto, name='produto'),
+    path('produto/form', views.form_produto, name='form_produto'),
+    path('produto/detalhes/<int:id>/', views.detalhes_produto, name='detalhes_produto'),
+
 ]
