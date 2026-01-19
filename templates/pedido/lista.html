@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block titulo_conteudo %}
+Pedidos
+{% endblock %}
+
+{% block conteudo %}
+
+<a href="{% url 'novo_pedido' %}" class="btn btn-primary mb-3">
+    Novo Pedido
+</a>
+
+<table class="table table-bordered">
+    <tr>
+        <th>ID</th>
+        <th>Cliente</th>
+        <th>Status</th>
+        <th>Total</th>
+        <th>Data</th>
+    </tr>
+
+    {% for p in lista %}
+    <tr>
+        <td>{{ p.id }}</td>
+        <td>{{ p.cliente }}</td>
+        <td>{{ p.get_status_display }}</td>
+        <td>{{ p.total }}</td>
+        <td>{{ p.data }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}
+

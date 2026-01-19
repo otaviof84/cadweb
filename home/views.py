@@ -134,6 +134,51 @@ def detalhes_produto(request, id):
     produto = get_object_or_404(Produto, pk=id)
     return render(request, 'produto/detalhes.html', {'produto': produto})
 
+def teste1(request):
+    return render(request, 'testes/teste1.html')
+
+
+
+def teste2(request):
+    return render(request, 'testes/teste2.html')
+
+def autocomplete_cliente(request):
+    termo = request.GET.get('term', '')
+
+    clientes = Cliente.objects.filter(
+        nome__icontains=termo
+    )[:10]
+
+    dados = []
+
+    for cliente in clientes:
+        dados.append({
+            'id': cliente.id,
+            'label': cliente.nome,
+            'value': cliente.nome
+        })
+
+    return JsonResponse(dados, safe=False)
+
+def lista_pedido(request):
+    pedidos = Pedido.objects.all().order_by('-id')
+    return render(request, 'pedido/lista.html', {'lista': pedidos})
+
+
+def novo_pedido(request):
+    if request.method == 'POST':
+        form = PedidoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('pedido')
+    else:
+        form = PedidoForm()
+
+    return render(request, 'pedido/formulario.html', {'form': form})
+
+
+
+
 
 
 

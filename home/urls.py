@@ -15,5 +15,11 @@ urlpatterns = [
     path('produto/', views.produto, name='produto'),
     path('produto/form', views.form_produto, name='form_produto'),
     path('produto/detalhes/<int:id>/', views.detalhes_produto, name='detalhes_produto'),
+    path('teste1/', views.teste1, name='teste1'),
+    path('teste2/', views.teste2, name='teste2'),
+    path('autocomplete/cliente/', views.autocomplete_cliente, name='autocomplete_cliente'),
+    path('pedido/', views.lista_pedido, name='pedido'),
+    path('pedido/novo/', views.novo_pedido, name='novo_pedido'),
+
 
 ]

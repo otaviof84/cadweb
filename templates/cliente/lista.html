@@ -33,3 +33,8 @@
 </table>
 
 {% endblock %}
+
+<a href="{% url 'novo_pedido' %}?cliente={{ c.id }}"
+   class="btn btn-sm btn-success">
+   Novo Pedido
+</a>

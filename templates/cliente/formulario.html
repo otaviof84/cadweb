@@ -12,10 +12,68 @@
 
 <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
+
+    <div class="form-group">
+        <label>Cliente</label>
+        <input type="text"
+               id="cliente"
+               name="cliente"
+               class="form-control"
+               placeholder="Digite o nome do cliente">
+    </div>
 
     <button type="submit" class="btn btn-primary">Salvar</button>
-    <button type="button" onclick="location.href='{% url 'cliente' %}'" class="btn btn-secondary">Voltar</button>
+    <button type="button"
+            onclick="location.href='{% url 'cliente' %}'"
+            class="btn btn-secondary">
+        Voltar
+    </button>
 </form>
 
 {% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById("cliente").addEventListener("keyup", function () {
+
+    let termo = this.value;
+
+    if (termo.length < 2) return;
+
+    fetch(`/autocomplete/cliente/?term=${termo}`)
+        .then(response => response.json())
+        .then(data => {
+
+            let lista = document.getElementById("lista");
+
+            if (!lista) {
+                lista = document.createElement("ul");
+                lista.id = "lista";
+                lista.style.border = "1px solid #ccc";
+                lista.style.background = "#fff";
+                lista.style.position = "absolute";
+                lista.style.width = "100%";
+                this.parentNode.appendChild(lista);
+            }
+
+            lista.innerHTML = "";
+
+            data.forEach(item => {
+                let li = document.createElement("li");
+                li.innerText = item.label;
+                li.style.cursor = "pointer";
+                li.style.padding = "5px";
+
+                li.onclick = () => {
+                    document.getElementById("cliente").value = item.value;
+                    lista.innerHTML = "";
+                };
+
+                lista.appendChild(li);
+            });
+        });
+});
+</script>
+{% endblock %}
+
+

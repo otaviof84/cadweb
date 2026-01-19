@@ -79,3 +79,19 @@ class ProdutoForm(forms.ModelForm):
         self.fields['preco'].localize = True
         self.fields['preco'].widget.is_localized = True
 
+
+class PedidoForm(forms.ModelForm):
+    class Meta:
+        model = Pedido
+        fields = ['status']
+
+class PedidoForm(forms.ModelForm):
+    class Meta:
+        model = Pedido
+        fields = ['cliente', 'status', 'total']
+        widgets = {
+            'cliente': forms.Select(attrs={'class': 'form-control autocomplete'}),
+            'status': forms.Select(attrs={'class': 'form-control'}),
+            'total': forms.TextInput(attrs={'class': 'form-control money'}),
+        }
+

@@ -3,28 +3,37 @@
 
 {% block conteudo %}
 
-<form method="post">
-{% csrf_token %}
-{{ form.as_p }}
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
 
-<input type="file" id="file">
-<br><br>
-<img id="preview" width="120">
+    <input type="file" id="file" class="form-control">
+    <br>
 
-<button type="submit" class="btn btn-primary mt-3">Salvar</button>
-<button type="button" onclick="location.href='{% url 'produto' %}'" class="btn btn-secondary mt-3">Voltar</button>
+    <img id="preview" width="120">
+
+    <button type="submit" class="btn btn-primary mt-3">Salvar</button>
+    <button type="button"
+            onclick="location.href='{% url 'produto' %}'"
+            class="btn btn-secondary mt-3">
+        Voltar
+    </button>
 </form>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
 $("#file").change(function(){
     let reader = new FileReader();
+
     reader.onload = function(e){
         $("#id_imagem").val(e.target.result);
         $("#preview").attr("src", e.target.result);
     }
+
     reader.readAsDataURL(this.files[0]);
 });
 </script>
 
 {% endblock %}
+
