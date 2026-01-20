@@ -95,3 +95,17 @@ class PedidoForm(forms.ModelForm):
             'total': forms.TextInput(attrs={'class': 'form-control money'}),
         }
 
+class ItemPedidoForm(forms.ModelForm):
+    class Meta:
+        model = ItemPedido
+        fields = ['produto', 'quantidade']
+        widgets = {
+            'produto': forms.Select(attrs={
+                'class': 'form-control autocomplete'
+            }),
+            'quantidade': forms.NumberInput(attrs={
+                'class': 'form-control inteiro'
+            }),
+        }
+
+

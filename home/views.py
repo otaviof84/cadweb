@@ -174,7 +174,31 @@ def novo_pedido(request):
     else:
         form = PedidoForm()
 
-    return render(request, 'pedido/formulario.html', {'form': form})
+    return render(request, 'pedido/form.html', {'form': form})
+
+def detalhes_pedido(request, id):
+    pedido = get_object_or_404(Pedido, pk=id)
+    itens = ItemPedido.objects.filter(pedido=pedido)
+
+    if request.method == 'POST':
+        form = ItemPedidoForm(request.POST)
+        if form.is_valid():
+            item = form.save(commit=False)
+            item.pedido = pedido
+            item.valor = item.produto.preco
+            item.save()
+            return redirect('detalhes_pedido', id=pedido.id)
+    else:
+        form = ItemPedidoForm()
+
+    contexto = {
+        'pedido': pedido,
+        'itens': itens,
+        'form': form,
+    }
+
+    return render(request, 'pedido/detalhes.html', contexto)
+
 
 
 

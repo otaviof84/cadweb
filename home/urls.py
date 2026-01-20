@@ -20,6 +20,8 @@ urlpatterns = [
     path('autocomplete/cliente/', views.autocomplete_cliente, name='autocomplete_cliente'),
     path('pedido/', views.lista_pedido, name='pedido'),
     path('pedido/novo/', views.novo_pedido, name='novo_pedido'),
+    path('pedido/detalhes/<int:id>/', views.detalhes_pedido, name='detalhes_pedido'),
+
 
 
 ]
