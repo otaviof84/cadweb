@@ -17,6 +17,7 @@ Pedidos
         <th>Status</th>
         <th>Total</th>
         <th>Data</th>
+        <th>Ações</th>
     </tr>
 
     {% for p in lista %}
@@ -26,9 +27,15 @@ Pedidos
         <td>{{ p.get_status_display }}</td>
         <td>{{ p.total }}</td>
         <td>{{ p.data }}</td>
+        <td>
+            <a href="{% url 'detalhes_pedido' p.id %}" class="btn btn-info btn-sm">
+                Detalhes
+            </a>
+        </td>
     </tr>
     {% endfor %}
 </table>
 
 {% endblock %}
+
 

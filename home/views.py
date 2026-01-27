@@ -3,18 +3,24 @@ from django.contrib import messages
 from .models import *
 from .forms import *
 
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout
+from django.http import JsonResponse
 
+
+
+@login_required(login_url='login')
 def index(request):
     return render(request, 'index.html')
 
-
+@login_required(login_url='login')
 def categoria(request):
     contexto = {
         'lista': Categoria.objects.all().order_by('-id'),
     }
     return render(request, 'categoria/lista.html', contexto)
 
-
+@login_required(login_url='login')
 def form_categoria(request):
     if request.method == 'POST':
         form = CategoriaForm(request.POST)
@@ -29,7 +35,7 @@ def form_categoria(request):
 
     return render(request, 'categoria/formulario.html', {'form': form})
 
-
+@login_required(login_url='login')
 def editar_categoria(request, id):
     try:
         categoria = Categoria.objects.get(pk=id)
@@ -50,7 +56,7 @@ def editar_categoria(request, id):
 
     return render(request, 'categoria/formulario.html', {'form': form})
 
-
+@login_required(login_url='login')
 def remover_categoria(request, id):
     try:
         categoria = Categoria.objects.get(pk=id)
@@ -61,7 +67,7 @@ def remover_categoria(request, id):
 
     return redirect('categoria')
 
-
+@login_required(login_url='login')
 def detalhes_categoria(request, id):
     try:
         categoria = Categoria.objects.get(pk=id)
@@ -71,13 +77,14 @@ def detalhes_categoria(request, id):
 
     return render(request, 'categoria/detalhes.html', {'categoria': categoria})
 
+@login_required(login_url='login')
 def cliente(request):
     contexto = {
         'lista': Cliente.objects.all().order_by('-id'),
     }
     return render(request, 'cliente/lista.html', contexto)
 
-
+@login_required(login_url='login')
 def form_cliente(request):
     if request.method == 'POST':
         form = ClienteForm(request.POST)
@@ -92,7 +99,7 @@ def form_cliente(request):
 
     return render(request, 'cliente/formulario.html', {'form': form})
 
-
+@login_required(login_url='login')
 def editar_cliente(request, id):
     cliente = get_object_or_404(Cliente, pk=id)
 
@@ -109,16 +116,18 @@ def editar_cliente(request, id):
 
     return render(request, 'cliente/formulario.html', {'form': form})
 
-
+@login_required(login_url='login')
 def remover_cliente(request, id):
     cliente = get_object_or_404(Cliente, pk=id)
     cliente.delete()
     messages.success(request, 'Cliente removido com sucesso!')
     return redirect('cliente')
 
+@login_required(login_url='login')
 def produto(request):
     return render(request, 'produto/lista.html', {'lista': Produto.objects.all()})
 
+@login_required(login_url='login')
 def form_produto(request):
     if request.method == 'POST':
         form = ProdutoForm(request.POST)
@@ -130,15 +139,17 @@ def form_produto(request):
         form = ProdutoForm()
     return render(request, 'produto/form.html', {'form': form})
 
+@login_required(login_url='login')
 def detalhes_produto(request, id):
     produto = get_object_or_404(Produto, pk=id)
     return render(request, 'produto/detalhes.html', {'produto': produto})
 
+@login_required(login_url='login')
 def teste1(request):
     return render(request, 'testes/teste1.html')
 
 
-
+@login_required(login_url='login')
 def teste2(request):
     return render(request, 'testes/teste2.html')
 
@@ -160,11 +171,12 @@ def autocomplete_cliente(request):
 
     return JsonResponse(dados, safe=False)
 
+@login_required(login_url='login')
 def lista_pedido(request):
     pedidos = Pedido.objects.all().order_by('-id')
     return render(request, 'pedido/lista.html', {'lista': pedidos})
 
-
+@login_required(login_url='login')
 def novo_pedido(request):
     if request.method == 'POST':
         form = PedidoForm(request.POST)
@@ -176,6 +188,7 @@ def novo_pedido(request):
 
     return render(request, 'pedido/form.html', {'form': form})
 
+@login_required(login_url='login')
 def detalhes_pedido(request, id):
     pedido = get_object_or_404(Pedido, pk=id)
     itens = ItemPedido.objects.filter(pedido=pedido)
@@ -198,6 +211,43 @@ def detalhes_pedido(request, id):
     }
 
     return render(request, 'pedido/detalhes.html', contexto)
+
+def detalhes_pedido(request, id):
+    pedido = Pedido.objects.get(id=id)
+    itens = ItemPedido.objects.filter(pedido=pedido)
+
+    total = 0
+    for item in itens:
+        total += item.quantidade * item.valor
+
+    pedido.total = total
+    pedido.save()
+
+    return render(request, 'pedido/detalhes.html', {
+        'pedido': pedido,
+        'itens': itens,
+        'total': total
+    })
+
+def login_view(request):
+    if request.method == 'POST':
+        usuario = request.POST.get('username')
+        senha = request.POST.get('password')
+
+        user = authenticate(request, username=usuario, password=senha)
+
+        if user is not None:
+            login(request, user)
+            return redirect('index')
+        else:
+            messages.error(request, 'Usuário ou senha inválidos.')
+
+    return render(request, 'login.html')
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')
 
 
 

@@ -37,10 +37,21 @@ Detalhes do Pedido
     <tr>
         <td>{{ item.produto }}</td>
         <td>{{ item.quantidade }}</td>
-        <td>{{ item.valor }}</td>
-        <td>{{ item.quantidade|floatformat:0|add:""|floatformat }} × {{ item.valor }}</td>
+        <td>R$ {{ item.valor }}</td>
+        <td>R$ {{ item.subtotal }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="4" class="text-center">
+            Nenhum item adicionado.
+        </td>
     </tr>
     {% endfor %}
 </table>
 
+<h4 class="text-end">Total: R$ {{ total }}</h4>
+
+<a href="{% url 'pedido' %}" class="btn btn-secondary mt-3">Voltar</a>
+
 {% endblock %}
+

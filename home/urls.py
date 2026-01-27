@@ -21,6 +21,10 @@ urlpatterns = [
     path('pedido/', views.lista_pedido, name='pedido'),
     path('pedido/novo/', views.novo_pedido, name='novo_pedido'),
     path('pedido/detalhes/<int:id>/', views.detalhes_pedido, name='detalhes_pedido'),
+    path('pedido/detalhes/<int:id>/', views.detalhes_pedido, name='detalhes_pedido'),
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
+
 
 
 
